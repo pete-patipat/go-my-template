@@ -1,0 +1,36 @@
+POST http://localhost:8080/go/run HTTP/1.1
+content-type: application/json
+
+{
+    "source":"package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.NotExist(\"Hello, World\")\n}"
+}
+
+###
+
+POST http://localhost:8080/emails/register HTTP/1.1
+content-type: application/json
+
+{
+    "email":"pete@example.com",
+    "firstname": "Patipat",
+    "lastname": "Chuensuwannakul"
+}
+
+###
+
+POST http://localhost:8080/campaign/prepare HTTP/1.1
+content-type: application/json
+
+{
+    "subject":"[TEST] LINE MAN Delivary promotion 500 THB",
+    "bodyTemplate": "Hi {{firstname}} {{lastname}}\\n\\n Please use coupon code LM500FREE within 31 April."
+}
+
+### Response
+# {id: ""}
+
+POST http://localhost:8080/campains/launch HTTP/1.1
+content-type: application/json
+{
+    "id": "xxx"
+}

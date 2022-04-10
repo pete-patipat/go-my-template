@@ -1,0 +1,92 @@
+package main
+
+import (
+	"log"
+	"os"
+	"os/exec"
+
+	"git.wndv.co/go/srv/errorx"
+	"git.wndv.co/go/srv/gin"
+	"git.wndv.co/go/srv/grace"
+)
+
+type GoRunRequest struct {
+	Source string `json:"source"`
+}
+
+type GoRunResponse struct {
+	Response string `json:"response"`
+}
+
+func delete(fileName string) {
+	e := os.Remove(fileName)
+	if e != nil {
+		log.Fatal(e)
+	}
+}
+
+func main() {
+	r := gin.Default()
+	r.Configurer().EnableHealthz()
+
+	r.GETw("/ping", func(ctx *gin.Context) (interface{}, error) {
+		return gin.H{
+			"message": "pong",
+		}, nil
+	})
+
+	r.GETw("/hello/sharp", func(ctx *gin.Context) (interface{}, error) {
+		p := ctx.Params
+		if len(p) <= 3 {
+			return nil, errorx.ErrBadRequest.Msg("Name is too short")
+		} else {
+			return gin.H{
+				"message": "Hi sharp",
+			}, nil
+		}
+
+	})
+
+	r.POSTw("go/run", func(ctx *gin.Context) (interface{}, error) {
+
+		var req GoRunRequest
+		var path = "mock.go"
+
+		// Version 1
+		errB := ctx.ShouldBindJSON(&req)
+		if errB != nil {
+			return nil, errorx.ErrInternalServerError.Msg("Error binding JSON")
+		}
+
+		d := []byte(req.Source)
+		errW := os.WriteFile(path, d, 0666)
+		if errW != nil {
+			return nil, errorx.ErrInternalServerError.Msg("Error writing a file")
+		}
+
+		out, errR := exec.Command("go", "run", path).Output()
+		if errR != nil {
+			defer delete(path)
+			return nil, errorx.ErrInternalServerError
+		}
+		if errR != nil {
+			defer func() {
+				delete(path)
+			}()
+			return nil, errorx.ErrInternalServerError.Msg("Error exec command")
+		}
+
+		defer delete(path)
+
+		res := GoRunResponse{Response: string(out)}
+		return gin.H{
+			"result": res,
+		}, nil
+	})
+
+	grace.OnSignal(func() {
+		r.StopGracefully()
+	})
+
+	r.Run("localhost:8080")
+}
