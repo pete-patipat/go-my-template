@@ -19,14 +19,14 @@ func Init(rp *repos.Repos) *gin.Gin {
 
 	r.POSTw("/emails/register", func(ctx *gin.Context) (interface{}, error) {
 		var email models.Email
-		errS := ctx.ShouldBindJSON(&email)
-		if errS != nil {
-			return nil, errS
+		err := ctx.ShouldBindJSON(&email)
+		if err != nil {
+			return nil, err
 		}
 		email.ID = primitive.NewObjectID()
-		errI := e.Email.Insert(ctx, email)
-		if errI != nil {
-			return nil, errI
+		err = e.Email.Insert(ctx, email)
+		if err != nil {
+			return nil, err
 		}
 
 		return gin.H{
@@ -36,14 +36,14 @@ func Init(rp *repos.Repos) *gin.Gin {
 
 	r.POSTw("/campaign/prepare", func(ctx *gin.Context) (interface{}, error) {
 		var campaign models.Campaign
-		errS := ctx.ShouldBindJSON(&campaign)
-		if errS != nil {
-			return nil, errS
+		err := ctx.ShouldBindJSON(&campaign)
+		if err != nil {
+			return nil, err
 		}
 		campaign.ID = primitive.NewObjectID()
-		errI := e.Campaign.Insert(ctx, campaign)
-		if errI != nil {
-			return nil, errI
+		err = e.Campaign.Insert(ctx, campaign)
+		if err != nil {
+			return nil, err
 		}
 
 		return gin.H{
