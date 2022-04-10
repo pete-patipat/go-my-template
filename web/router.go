@@ -4,13 +4,12 @@ import (
 	"git.wndv.co/go/srv/gin"
 	"git.wndv.co/sharp/app/models"
 	"git.wndv.co/sharp/app/repos"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func Init(rp *repos.Repos) *gin.Gin {
 	r := gin.Default()
 	r.Configurer().ProductionReady()
-	e := repos.Init()
+	repo := repos.Init()
 	r.GETw("/ping", func(ctx *gin.Context) (interface{}, error) {
 		return gin.H{
 			"message": "pong",
@@ -23,33 +22,54 @@ func Init(rp *repos.Repos) *gin.Gin {
 		if err != nil {
 			return nil, err
 		}
-		email.ID = primitive.NewObjectID()
-		err = e.Email.Insert(ctx, email)
+
+		result, err := repo.Email.Insert(ctx, email)
 		if err != nil {
 			return nil, err
 		}
 
 		return gin.H{
-			"result": email,
+			"result": result,
 		}, nil
 	})
 
 	r.POSTw("/campaign/prepare", func(ctx *gin.Context) (interface{}, error) {
-		var campaign models.Campaign
-		err := ctx.ShouldBindJSON(&campaign)
+		var c models.Campaign
+		err := ctx.ShouldBindJSON(&c)
 		if err != nil {
 			return nil, err
 		}
-		campaign.ID = primitive.NewObjectID()
-		err = e.Campaign.Insert(ctx, campaign)
+
+		result, err := repo.Campaign.Insert(ctx, c)
 		if err != nil {
 			return nil, err
 		}
 
 		return gin.H{
-			"result": campaign.ID,
+			"result": result,
 		}, nil
 	})
+
+	// r.POSTw("campaign/launch", func(ctx *gin.Context) (interface{}, error) {
+	// 	var c models.Campaign
+	// 	err := ctx.ShouldBindJSON(&c)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+
+	// 	emails, err := repo.Email.GetAll(ctx)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+
+	// 	for _, email := range emails {
+	// 		str := services.FormatEmail(email, nil)
+	// 	}
+
+	// 	return gin.H{
+	// 		"result": "",
+	// 	}, nil
+	// })
 
 	return r
 }

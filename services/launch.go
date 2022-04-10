@@ -6,7 +6,7 @@ import (
 	"git.wndv.co/sharp/app/models"
 )
 
-func FormatEmail(email models.Email, campaign models.Campaign) string {
-	replacer := strings.NewReplacer("{{firstname}}", email.Firstname, "{{lastname}}", email.Lastname)
-	return replacer.Replace(campaign.BodyTemplate)
+func FormatEmail(e models.Email, c models.Campaign) string {
+	r := strings.NewReplacer("{{firstname}}", e.Firstname, "{{lastname}}", e.Lastname)
+	return r.Replace(c.BodyTemplate)
 }

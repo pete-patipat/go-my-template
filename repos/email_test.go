@@ -2,6 +2,7 @@ package repos_test
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"git.wndv.co/sharp/app/models"
@@ -11,12 +12,23 @@ import (
 func TestEmailRepository(t *testing.T) {
 	e := repos.Init().Email
 
-	err := e.Insert(context.TODO(), models.Email{
-		Email:     "p1111@example.com",
-		Firstname: "f22222",
-		Lastname:  "l33333",
-	}.NewID())
-	if err != nil {
-		t.Errorf("err %v", err)
-	}
+	t.Run("Insert case", func(t *testing.T) {
+		_, err := e.Insert(context.TODO(), models.Email{
+			Email:     "t4@example.com",
+			Firstname: "t4",
+			Lastname:  "t4",
+		})
+		if err != nil {
+			t.Errorf("err %v", err)
+		}
+	})
+
+	t.Run("Get All case", func(t *testing.T) {
+		r, err := e.GetAll(context.TODO())
+		fmt.Printf("r %v", r)
+		if err != nil {
+			t.Errorf("err %v", err)
+		}
+	})
+
 }

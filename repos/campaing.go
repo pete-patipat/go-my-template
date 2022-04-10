@@ -11,10 +11,10 @@ type CampaignRepository struct {
 	col *mongo.Collection
 }
 
-func (e *CampaignRepository) Insert(ctx context.Context, m models.Campaign) error {
-	_, err := e.col.InsertOne(ctx, m)
+func (e *CampaignRepository) Insert(ctx context.Context, m models.Campaign) (interface{}, error) {
+	r, err := e.col.InsertOne(ctx, m)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return r.InsertedID, nil
 }
