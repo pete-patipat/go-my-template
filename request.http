@@ -11,9 +11,9 @@ POST http://localhost:8080/emails/register HTTP/1.1
 content-type: application/json
 
 {
-    "email":"test-3@example.com",
-    "firstname": "test-3",
-    "lastname": "test-3"
+    "email":"test-7@example.com",
+    "firstname": "test-7",
+    "lastname": "test-7"
 }
 
 ###

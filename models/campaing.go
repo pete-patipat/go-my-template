@@ -6,9 +6,9 @@ import (
 )
 
 type Campaign struct {
-	ID           *primitive.ObjectID `json:"ID" bson:"_id,omitempty"`
-	Subject      string              `bson:"subject"`
-	BodyTemplate string              `bson:"bodytemplate"`
+	ID           primitive.ObjectID `json:"ID" bson:"_id,omitempty"`
+	Subject      string             `bson:"subject"`
+	BodyTemplate string             `bson:"bodytemplate"`
 }
 
 type CampaignView struct {

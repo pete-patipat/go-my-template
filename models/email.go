@@ -6,10 +6,10 @@ import (
 )
 
 type Email struct {
-	ID        *primitive.ObjectID `json:"ID" bson:"_id,omitempty"`
-	Email     string              `bson:"email"`
-	Firstname string              `bson:"firstname"`
-	Lastname  string              `bson:"lastname"`
+	ID        primitive.ObjectID `json:"ID" bson:"_id,omitempty"`
+	Email     string             `bson:"email"`
+	Firstname string             `bson:"firstname"`
+	Lastname  string             `bson:"lastname"`
 }
 
 type EmailView struct {
