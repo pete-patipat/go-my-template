@@ -2,10 +2,13 @@ module git.wndv.co/sharp/app
 
 go 1.18
 
-require git.wndv.co/go/srv v1.5.1
+require (
+	git.wndv.co/go/pillars v1.4.0
+	git.wndv.co/go/srv v1.5.1
+	go.mongodb.org/mongo-driver v1.9.0
+)
 
 require (
-	git.wndv.co/go/pillars v1.4.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
@@ -40,7 +43,6 @@ require (
 	github.com/xdg-go/scram v1.0.2 // indirect
 	github.com/xdg-go/stringprep v1.0.2 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
-	go.mongodb.org/mongo-driver v1.9.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.30.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/runtime v0.30.0 // indirect
 	go.opentelemetry.io/contrib/propagators/b3 v1.5.0 // indirect
